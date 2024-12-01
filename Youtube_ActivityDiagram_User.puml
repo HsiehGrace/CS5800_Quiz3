@@ -1,0 +1,62 @@
+@startuml
+start
+
+
+:Open Youtube.com;
+
+if( Logged in to Google? ) then (yes)
+(no) elseif (Want to log in?) then (yes)
+    :Login using Google Account;
+else (no)
+endif
+
+:Youtube Home Page;
+
+repeat :Browse Youtube;
+    label startBrowse
+    if(See a video you like?) then (yes)
+    elseif (Looking for something specific?) then (yes)
+        :Use Search bar;
+    elseif (Looking for a category?) then (yes)
+        :Click left bar;
+        switch (What Category?)
+        case()
+            :Subscriptions;
+        case()
+            :Recommended;
+        case()
+            :Popular;
+        case()
+            :Shorts;
+        case()
+            :Explore;
+        endswitch
+
+    endif
+
+    if(Found what you want?) then (no)
+        break
+    endif
+    -> yes;
+    :Watch Video;
+
+    switch(Interact with Video)
+    case()
+        :Like;
+    case()
+        :Dislike;
+    case()
+        :Comment;
+    case()
+        :Share;
+    case()
+        :Subscribe;
+    endswitch
+repeat while (New Video?) is (yes)
+-> no;
+
+
+stop
+
+
+@enduml
