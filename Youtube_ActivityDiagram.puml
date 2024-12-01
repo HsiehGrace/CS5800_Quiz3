@@ -1,0 +1,24 @@
+@startuml
+start
+
+
+:Open Youtube.com;
+
+if( Logged in to Google? ) then (yes)
+(no) elseif (Want to login?) then (yes)
+    :Login using Google Account;
+else (no)
+endif
+
+:Youtube Home Page;
+
+repeat :Find a video;
+    :Watch video;
+repeat while (New Video?) is (yes)
+-> no;
+
+
+stop
+
+
+@enduml
