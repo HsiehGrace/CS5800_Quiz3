@@ -1,11 +1,50 @@
 @startuml
-'https://plantuml.com/sequence-diagram
 
-autonumber
+class User{
+    -String userName
+    -String passWord
+    -String email
+    -String dateOfBirth
+    +void logIn()
+    +void logOut()
+}
 
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
+class HomePage{
+    -String searchBar
+    -String[] categoryList
+    -Video[] VideoList
+    +void videoCollection()
+    +void chooseVideo()
+    +String getSearchBar()
+    +String chooseCategory()
+    +String selectedVideo()
+}
 
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
+class VideoUpload{
+    +void isLoggedIn()
+    +void uploadVideo(String nameOfVideo)
+    +void manageVideo()
+    +void manageMostLike()
+    +void postOtherMedia()
+}
+
+class Video{
+    -String videoName
+    -double lengthOfVideo
+    +String getName()
+    +double getLengthOfVideo()
+    +void play()
+    +void pause()
+    +void skip()
+    +void comment(String comment)
+    +String share()
+    +Subscribe
+}
+
+VideoUpload --o Video
+HomePage --o Video
+
+User --o VideoUpload
+User -- HomePage
+
 @enduml
