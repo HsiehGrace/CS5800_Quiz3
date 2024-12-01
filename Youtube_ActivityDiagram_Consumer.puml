@@ -19,6 +19,7 @@ repeat :Browse Youtube;
         :Use Search bar;
     elseif (Looking for a category?) then (yes)
         :Click left bar;
+
         switch (What Category?)
         case()
             :Subscriptions;
@@ -31,28 +32,43 @@ repeat :Browse Youtube;
         case()
             :Explore;
         endswitch
+    elseif(Looking for a channel?) then(yes)
 
+        switch(Interact with Channel)
+        case()
+        :Browse
+        channel content;
+        case()
+            :Subscribe
+            to channel;
+        endswitch
+        :Pick a video
+        from channel;
+    else
+        :Didn't find
+        anything interesting;
+        end
     endif
 
-    if(Found what you want?) then (no)
-        break
-    endif
-    -> yes;
     :Watch Video;
+    if(Logged In) then (yes)
+        switch(Interact with Video)
+        case()
+            :Like;
+        case()
+            :Dislike;
+        case()
+            :Comment;
+        case()
+            :Share;
+        case()
+            :Subscribe;
+        case()
+        endswitch
+    else (no)
+    endif
 
-    switch(Interact with Video)
-    case()
-        :Like;
-    case()
-        :Dislike;
-    case()
-        :Comment;
-    case()
-        :Share;
-    case()
-        :Subscribe;
-    endswitch
-repeat while (New Video?) is (yes)
+repeat while (Continue Browsing?) is (yes)
 -> no;
 
 
