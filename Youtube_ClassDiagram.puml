@@ -97,9 +97,6 @@ class PauseState implements VideoState {
 class YouTubeWebClient {
     +WebPage currentPage
     +User currentUser
-    +VideoPlayer videoPlayer
-    +Video currentVideo
-    +void selectCurrentVideo()
 }
 
 interface WebPage {
@@ -135,9 +132,15 @@ class HomePage implements WebPage{
     +String selectedVideo()
 }
 
+class VideoPlayerPage implements WebPage {
+    +VideoPlayer videoPlayer
+    +Video currentVideo
+    +void selectCurrentVideo()
+}
+
 Video --o VideoPlayer
 
-HomePage --o Video
+HomePage o-- Video
 
 User -- HomePage
 
@@ -145,7 +148,9 @@ YouTubeDatabaseProxy o-- User
 YouTubeDatabaseProxy o-- Video
 YouTubeDatabaseProxy -- YouTubeWebClient
 
-YouTubeWebClient o-- VideoPlayer
+YouTubeWebClient o-- User
+
+VideoPlayerPage o-- VideoPlayer
 
 VideoState --> VideoPlayer::state
 WebPage --> YouTubeWebClient::currentPage
