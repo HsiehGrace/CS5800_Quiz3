@@ -2,85 +2,167 @@
 
 class User{
     -String userName
-    -String passWord
+    -String passWord_hashed
     -String email
     -String dateOfBirth
+    -Channel_AdminPage userChannelPage
+    -ArrayList<String> subscribedChannels
+    -Video_Interaction watchHistory
     +void logIn()
     +void logOut()
+    +void addWatchHistory()
+    +void clearWatchHistory()
+    +void subscribe(ChannelPage page)
 }
 
-class HomePage{
-    -String searchBar
-    -String[] categoryList
-    -Video[] VideoList
-    +void videoCollection()
-    +void chooseVideo()
-    +String getSearchBar()
-    +String chooseCategory()
-    +String selectedVideo()
-}
-
-class VideoUpload{
-    +void isLoggedIn()
-    +void uploadVideo(String nameOfVideo)
-    +void manageVideo()
-    +void manageMostLike()
-    +void postOtherMedia()
-}
 
 class Video{
+    -User creator
     -String videoName
     -double lengthOfVideo
-    +String getName()
-    +double getLengthOfVideo()
-    +void comment(String comment)
+    -String thumbnail_filePath
+    -String video_filePath
+    -int viewCount
+    -int likeCount
+    -int dislikeCount
+    -ArrayList<Comments>comments
+    +int getViewCount()
+    +int getLikeCount()
+    +int getDislikeCount()
+    +void addView()
+    +void addLike()
+    +void removeLike()
+    +void addDislike()
+    +void removeDislike()
+    +void comment(User user, String comment)
 }
 
+class VideoBuilder <<Builder>>{
+    -String videoName
+    -String thumbnail_filePath
+    -String video_filePath
+    +void setVideoName()
+    +void setThumbnailFile()
+    +void setVideoFile()
+    +Video createVideo()
+}
+
+class Video_Interaction extends Video{
+    -User watcher
+    -Video video
+    -Time currentTime
+    +void play()
+    +void pause()
+    +void seek(Time timestamp)
+    +void subscribe()
+    +void comment(String comment)
+    +String share()
+}
+
+class WebPage <<interface>> {
+    +void returnHome()
+    +void searchBar()
+    +void menuBar()
+    +Video selectVideo()
+}
+
+class ChannelPage implements WebPage{
+    -String pageFilePath
+    -ArrayList<Video> uploadedVideos
+    -int subscriberCount
+    +String subscribe()
+    +void unsubscribe()
+}
+
+class Channel_AdminPage extends ChannelPage{
+    -VideoFactory videoFactory
+    +void createVideo()
+    +void modifyVideo()
+    +String getStatistics()
+}
+
+class MainPage implements WebPage{
+    -ArrayList<Video>VideoList
+    +void setVideoList()
+}
+
+User o-- Channel_AdminPage
+User o-- Video_Interaction
+ChannelPage o-- VideoBuilder
+ChannelPage o-- Video
+MainPage o-- Video
 
 class Driver{
-    +void play(Video video)
-    +void skip(Video video)
-    +void share(Video video)
-    +void subscribe(Video video)
+    +WebPage currentPage
+    +User currentUser
+    +Video_Interaction currentVideo
+    +Video_Interaction selectVideo()
 }
 
-class Play{
-    +void play(Video video)
-    +void skip(Video video)
-    +void share(Video video)
-    +void subscribe(Video video)
-}
+Driver o-- WebPage
+Driver o-- User
+Driver o-- Video_Interaction
 
-class Skip{
-    +void play(Video video)
-    +void skip(Video video)
-    +void share(Video video)
-    +void subscribe(Video video)
-}
 
-class Share{
-    +void play(Video video)
-    +void skip(Video video)
-    +void share(Video video)
-    +void subscribe(Video video)
-}
-class Subscribe{
-    +void play(Video video)
-    +void skip(Video video)
-    +void share(Video video)
-    +void subscribe(Video video)
-}
-Driver --o Play
-Driver --o Skip
-Driver --o Share
-Driver --o Subscribe
 
-Video --o Driver
 
-VideoUpload --o Video
-HomePage --o Video
 
-User --o VideoUpload
-User -- HomePage
+'class HomePage{
+'    -String searchBar
+'    -String[] categoryList
+'    -Video[] VideoList
+'    +void videoCollection()
+'    +void chooseVideo()
+'    +String getSearchBar()
+'    +String chooseCategory()
+'    +String selectedVideo()
+'}
+
+'class Driver{
+'    +void play(Video video)
+'    +void skip(Video video)
+'    +void share(Video video)
+'    +void subscribe(Video video)
+'}
+'
+'class Play{
+'    +void play(Video video)
+'    +void skip(Video video)
+'    +void share(Video video)
+'    +void subscribe(Video video)
+'}
+'
+'class Skip{
+'    +void play(Video video)
+'    +void skip(Video video)
+'    +void share(Video video)
+'    +void subscribe(Video video)
+'}
+'
+'class Share{
+'    +void play(Video video)
+'    +void skip(Video video)
+'    +void share(Video video)
+'    +void subscribe(Video video)
+'}
+'class Subscribe{
+'    +void play(Video video)
+'    +void skip(Video video)
+'    +void share(Video video)
+'    +void subscribe(Video video)
+'}
+
+'Driver --o Play
+'Driver --o Skip
+'Driver --o Share
+'Driver --o Subscribe
+'
+'Video --o Driver
+'
+'VideoUpload --o Video
+'HomePage --o Video
+'
+'User --o VideoUpload
+'User -- HomePage
 
 @enduml
