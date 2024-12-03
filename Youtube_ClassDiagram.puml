@@ -33,13 +33,49 @@ class Video{
     -double lengthOfVideo
     +String getName()
     +double getLengthOfVideo()
-    +void play()
-    +void pause()
-    +void skip()
     +void comment(String comment)
-    +String share()
-    +Subscribe
 }
+
+
+class Driver{
+    +void play(Video video)
+    +void skip(Video video)
+    +void share(Video video)
+    +void subscribe(Video video)
+}
+
+class Play{
+    +void play(Video video)
+    +void skip(Video video)
+    +void share(Video video)
+    +void subscribe(Video video)
+}
+
+class Skip{
+    +void play(Video video)
+    +void skip(Video video)
+    +void share(Video video)
+    +void subscribe(Video video)
+}
+
+class Share{
+    +void play(Video video)
+    +void skip(Video video)
+    +void share(Video video)
+    +void subscribe(Video video)
+}
+class Subscribe{
+    +void play(Video video)
+    +void skip(Video video)
+    +void share(Video video)
+    +void subscribe(Video video)
+}
+Driver --o Play
+Driver --o Skip
+Driver --o Share
+Driver --o Subscribe
+
+Video --o Driver
 
 VideoUpload --o Video
 HomePage --o Video
