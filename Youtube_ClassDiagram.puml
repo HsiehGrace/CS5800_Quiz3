@@ -3,12 +3,13 @@
 class User implements PropertyChangeListener{
     -String userId
     -String userName
-    -String password
+    -String password_hashed
     -String email
     -String dateOfBirth
     -int subscriberCount
     -ArrayList<String> subscribedChannelIds
     -ArrayList<String> uploadedVideoIds
+    -ArrayList<String> watchHistoryVideoIds
 
     +void logIn()
     +void logOut()
@@ -17,25 +18,8 @@ class User implements PropertyChangeListener{
     +void propertyChange(PropertyChangeEvent event)
     +void toggleSubscriptionTo(String userId)
     +void announceVideo(String videoId)
-}
-
-class HomePage{
-    -String searchBar
-    -String[] categoryList
-    -Video[] VideoList
-    +void videoCollection()
-    +void chooseVideo()
-    +String getSearchBar()
-    +String chooseCategory()
-    +String selectedVideo()
-}
-
-class VideoUpload{
-    +void isLoggedIn()
-    +void uploadVideo(String nameOfVideo)
-    +void manageVideo()
-    +void manageMostLike()
-    +void postOtherMedia()
+    +void addWatchHistory(String videoId)
+    +void clearWatchHistory()
 }
 
 class Video{
@@ -44,15 +28,33 @@ class Video{
     -String title
     -String description
     -double videoLength
+    -String thumbnail_filePath
+    -String video_filePath
     -ArrayList<String> tags
-    -int likes
-    -int dislikes
-    -int views
+    -int viewCount
+    -int likeCount
+    -int dislikeCount
+    -ArrayList<Comments>comments
 
-    +String getTitle()
-    +void addComment(String comment)
-    +double getLengthOfVideo()
-    +void setVolume()
+    +int getViewCount()
+    +int getLikeCount()
+    +int getDislikeCount()
+    +void addView()
+    +void addLike()
+    +void removeLike()
+    +void addDislike()
+    +void removeDislike()
+    +void addComment(User user, String comment)
+}
+
+class VideoBuilder <<Builder>>{
+    -String videoName
+    -String thumbnail_filePath
+    -String video_filePath
+    +void setVideoName()
+    +void setThumbnailFile()
+    +void setVideoFile()
+    +Video createVideo()
 }
 
 class YouTubeDatabaseProxy {
@@ -93,24 +95,62 @@ class PauseState implements VideoState {
 }
 
 class YouTubeWebClient {
+    +WebPage currentPage
+    +User currentUser
+    +VideoPlayer videoPlayer
+    +Video currentVideo
+    +void selectCurrentVideo()
+}
+
+interface WebPage {
+    +void returnHome()
+    +void searchBar()
+    +void menuBar()
+    +Video selectVideo()
+}
+
+class ChannelPage implements WebPage{
+    -String pageFilePath
+    -ArrayList<Video> uploadedVideos
+    -int subscriberCount
+    +String subscribe()
+    +void unsubscribe()
+}
+
+class Channel_AdminPage implements WebPage{
+    -VideoFactory videoFactory
+    +void createVideo()
+    +void modifyVideo()
+    +String getStatistics()
+}
+
+class HomePage implements WebPage{
+    -String searchBar
+    -String[] categoryList
+    -Video[] VideoList
+    +void videoCollection()
+    +void chooseVideo()
+    +String getSearchBar()
+    +String chooseCategory()
+    +String selectedVideo()
 }
 
 Video --o VideoPlayer
 
-VideoUpload --o Video
 HomePage --o Video
 
-User --o VideoUpload
 User -- HomePage
 
 YouTubeDatabaseProxy o-- User
 YouTubeDatabaseProxy o-- Video
-
 YouTubeDatabaseProxy -- YouTubeWebClient
 
-YouTubeWebClient -- HomePage
-YouTubeWebClient -- VideoUpload
+YouTubeWebClient o-- VideoPlayer
 
 VideoState --> VideoPlayer::state
+WebPage --> YouTubeWebClient::currentPage
+
+ChannelPage o-- VideoBuilder
+ChannelPage o-- Video
 
 @enduml
