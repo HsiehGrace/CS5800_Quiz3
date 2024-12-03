@@ -1,12 +1,22 @@
 @startuml
 
-class User{
+class User implements PropertyChangeListener{
+    -String userId
     -String userName
-    -String passWord
+    -String password
     -String email
     -String dateOfBirth
+    -int subscriberCount
+    -ArrayList<String> subscribedChannelIds
+    -ArrayList<String> uploadedVideoIds
+
     +void logIn()
     +void logOut()
+    +Video uploadVideo()
+    +void deleteVideo(String videoId)
+    +void propertyChange(PropertyChangeEvent event)
+    +void toggleSubscriptionTo(String userId)
+    +void announceVideo(String videoId)
 }
 
 class HomePage{
@@ -29,58 +39,78 @@ class VideoUpload{
 }
 
 class Video{
-    -String videoName
-    -double lengthOfVideo
-    +String getName()
+    -String videoId
+    -String videoCreatorId
+    -String title
+    -String description
+    -double videoLength
+    -ArrayList<String> tags
+    -int likes
+    -int dislikes
+    -int views
+
+    +String getTitle()
+    +void addComment(String comment)
     +double getLengthOfVideo()
-    +void comment(String comment)
+    +void setVolume()
 }
 
+class YouTubeDatabaseProxy {
+    ArrayList<User> userCache
+    ArrayList<Video> videoCache
 
-class Driver{
-    +void play(Video video)
-    +void skip(Video video)
-    +void share(Video video)
-    +void subscribe(Video video)
+    ArrayList<Video> getVideosByTitle(String title)
+    ArrayList<Video> getVideosByUserSubscriptions(String userId)
 }
 
-class Play{
-    +void play(Video video)
-    +void skip(Video video)
-    +void share(Video video)
-    +void subscribe(Video video)
+class VideoPlayer{
+    -String videoId
+    -int volume
+    -double currTimestamp
+    -VideoState state
+
+    +void play()
+    +void pause()
+    +void fastForward()
+    +void rewind()
+    +void setVolume(int newVolume)
+    +void setCurrTimeStamp(double newTimeStamp)
 }
 
-class Skip{
-    +void play(Video video)
-    +void skip(Video video)
-    +void share(Video video)
-    +void subscribe(Video video)
+interface VideoState {
+    +void play()
+    +void pause()
 }
 
-class Share{
-    +void play(Video video)
-    +void skip(Video video)
-    +void share(Video video)
-    +void subscribe(Video video)
+class PlayState implements VideoState {
+    +void play()
+    +void pause()
 }
-class Subscribe{
-    +void play(Video video)
-    +void skip(Video video)
-    +void share(Video video)
-    +void subscribe(Video video)
-}
-Driver --o Play
-Driver --o Skip
-Driver --o Share
-Driver --o Subscribe
 
-Video --o Driver
+class PauseState implements VideoState {
+    +void play()
+    +void pause()
+}
+
+class YouTubeWebClient {
+}
+
+Video --o VideoPlayer
 
 VideoUpload --o Video
 HomePage --o Video
 
 User --o VideoUpload
 User -- HomePage
+
+YouTubeDatabaseProxy o-- User
+YouTubeDatabaseProxy o-- Video
+
+YouTubeDatabaseProxy -- YouTubeWebClient
+
+YouTubeWebClient -- HomePage
+YouTubeWebClient -- VideoUpload
+
+VideoState --> VideoPlayer::state
 
 @enduml
