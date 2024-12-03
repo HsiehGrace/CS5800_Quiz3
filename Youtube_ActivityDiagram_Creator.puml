@@ -1,3 +1,51 @@
 @startuml
+:Open Youtube.com;
+
+if( Logged in to Google? ) then (yes)
+(no) elseif (Want to log in?) then (yes)
+    :Login using Google Account;
+else (no)
+    :Must login to access
+    account Creator pages;
+    end
+endif
+
+:Youtube Home Page;
+switch(Browsing Youtube)
+case()
+    :Browse as a Consumer;
+    stop
+case()
+    :Go to Creator Page;
+endswitch
+
+repeat :Creator Page;
+
+    switch(Interact with Videos)
+    case()
+        :Create New Video;
+        :Set Metadata;
+        :Upload Video File;
+        :Confirm;
+    case()
+        switch(Modify Existing Video)
+        case()
+            :Change Thumbnail;
+        case()
+            :Modify Metadata;
+        case()
+            :Delete Video;
+        endswitch
+
+    case()
+        :Check Statistics on Existing Video;
+    endswitch
+
+repeat while (Done?) is (no)
+-> yes;
+stop
+
+
+
 
 @enduml

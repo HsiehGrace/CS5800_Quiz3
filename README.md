@@ -2,3 +2,4 @@
 
 - Ahmad Alkadi
 - Grace Hsieh
+- Nathan Cho
